@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>パーセンテージ表示</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #111;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 {
+    margin-top: 10vh;
+    font-size: 4vw;
+    text-align: center;
+  }
+
+  /* スマホ表示用 */
+    @media (max-width: 600px) {
+    h1 {
+        margin-top: 15vh; 
+        font-size: 36px;
+    }
+    }
+
+  .center-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  #board {
+    width: 80vw;
+    max-width: 500px;
+    min-width: 280px;
+    aspect-ratio: 7 / 2; /* 幅と高さの比率を固定 */
+    border: 10px solid #333;
+    border-radius: 15px;
+    background: radial-gradient(circle at 50% 20%, #222, #000);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(3vw + 1em); /* 画面サイズに応じて文字拡大縮小 */
+    letter-spacing: 0.2em;
+    box-shadow: 0 0 15px #000 inset, 0 0 30px #f00;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .blue {
+    color: #00e5ff;
+    text-shadow: 0 0 15px #00ffff;
+  }
+  .yellow {
+    color: #ffe600;
+    text-shadow: 0 0 15px #ffff66;
+  }
+  .red {
+    color: #ff3333;
+    font-weight: bold;
+    text-shadow: 0 0 20px #ff4444;
+  }
+
+  button {
+    padding: 2vh 4vw;
+    font-size: calc(2vw + 0.8em);
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+    background-size: 400%;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    cursor: pointer;
+    animation: rainbow 5s linear infinite;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    text-shadow: 2px 2px 5px black, 0 0 10px rgba(0,0,0,0.9);
+    margin-top: 7vh;
+  }
+
+  @keyframes rainbow {
+    0% { background-position: 0% }
+    100% { background-position: 400% }
+  }
+
+  button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.25);
+    border-radius: 12px;
+  }
+
+  button span {
+    position: relative;
+    z-index: 1;
+  }
+
+  button:hover {
+    box-shadow: 0 0 25px white;
+    transform: scale(1.05);
+    text-shadow: 0 0 10px #fff, 0 0 20px #0ff;
+  }
+  
+  /* PC表示用：幅601px以上 */
+  @media (min-width: 601px) {
+    #board {
+        max-width: 800px; /* PCでは幅を広くする */
+    }
+  }
+
+
+</style>
+</head>
+<body>
+<h1>Today's Persent</h1>
+
+<div class="center-area">
+  <div id="board"></div>
+  <button onclick="showPercentage()"><span>表示する</span></button>
+</div>
+
+<script>
+let board = document.getElementById("board");
+
+function showPercentage() {
+  let value;
+  let colorClass = "";
+
+  while (true) {
+    if (Math.random() < 0.1) {
+      let bigVal = 1000 + Math.random() * (1000000 - 1000);
+      value = bigVal.toFixed(3);
+      colorClass = "red";
+      break;
+    }
+
+    let randomVal = -Math.log(Math.random()) * 100;
+
+    if (randomVal <= 30) {
+      value = randomVal.toFixed(3);
+      colorClass = "blue";
+      break;
+    } else if (randomVal >= 100) {
+      value = randomVal.toFixed(3);
+      if (randomVal < 1000) {
+        colorClass = "yellow";
+      } else {
+        colorClass = "red";
+      }
+      break;
+    }
+  }
+
+  board.innerHTML = `<span class="${colorClass}">${value} %</span>`;
+}
+</script>
+
+</body>
+</html>
